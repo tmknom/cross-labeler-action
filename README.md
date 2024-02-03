@@ -1,26 +1,34 @@
-# template-composite-action
+# cross-labeler-action
 
-Template repository for Composite Action.
+A convenient wrapper for [actions/labeler][labeler].
 
 <!-- actdocs start -->
 
 ## Description
 
-Template repository for creating Composite Action with GitHub Actions.
+This action serves as a convenient wrapper for [actions/labeler][labeler].
+Automatically assigning labels to new pull requests based on changed file paths or branch names, similar to [actions/labeler][labeler].
 
 ## Usage
 
-Write usage for your Composite Action.
+To set up the action, you need to create a YAML file that defines your configurations.
+Refer to the detailed configuration syntax for the labeler in [actions/labeler][labeler].
+
+### Configuration Path
 
 ```yaml
   steps:
-    - name: Template
-      uses: tmknom/template-composite-action@v0
+    - name: Cross Labeler
+      uses: tmknom/cross-labeler-action@v0
+      with:
+        configuration-path: .github/labeler.yml
 ```
 
 ## Inputs
 
-N/A
+| Name | Description | Default | Required |
+| :--- | :---------- | :------ | :------: |
+| configuration-path | The path for the label configurations. | n/a | no |
 
 ## Outputs
 
@@ -30,7 +38,10 @@ N/A
 
 ## Permissions
 
-N/A
+| Scope         | Access |
+| :------------ | :----- |
+| contents      | read   |
+| pull-requests | write  |
 
 ## FAQ
 
@@ -44,4 +55,5 @@ See [GitHub Releases][releases].
 
 Apache 2 Licensed. See [LICENSE](LICENSE) for full details.
 
-[releases]: https://github.com/tmknom/template-composite-action/releases
+[labeler]: https://github.com/actions/labeler
+[releases]: https://github.com/tmknom/cross-labeler-action/releases
