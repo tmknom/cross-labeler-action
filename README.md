@@ -1,6 +1,6 @@
 # cross-labeler-action
 
-A convenient wrapper for [actions/labeler][labeler].
+Run [actions/labeler][labeler] with configuration shared across repositories.
 
 <!-- actdocs start -->
 
