@@ -60,6 +60,11 @@ Refer to the detailed configuration syntax for the labeler in [actions/labeler][
 
 N/A
 
+## Related projects
+
+- [label-workflows](https://github.com/tmknom/label-workflows): Collection of label workflows.
+- [configurations](https://github.com/tmknom/configurations): Collection of configurations.
+
 ## Release notes
 
 See [GitHub Releases][releases].
