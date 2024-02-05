@@ -21,7 +21,7 @@ Refer to the detailed configuration syntax for the labeler in [actions/labeler][
     - name: Cross Labeler
       uses: tmknom/cross-labeler-action@v0
       with:
-        configuration-url: https://raw.githubusercontent.com/tmknom/cross-labeler-action/v0/configurations/conventional-commits.yml
+        configuration-url: https://raw.githubusercontent.com/tmknom/configurations/main/labeler/conventional-commits.yml
 ```
 
 ### Configuration Path
