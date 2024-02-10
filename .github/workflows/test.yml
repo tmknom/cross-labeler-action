@@ -53,10 +53,11 @@ jobs:
       - name: Verify
         env:
           CONFIGURATION_PATH: ${{ steps.exercise.outputs.configuration-path }}
+          CONFIGURATION_SHA256: ${{ steps.exercise.outputs.configuration-sha256 }}
         run: |
           set -x
           test "${CONFIGURATION_PATH}" = "${RUNNER_TEMP}/labeler.yml"
-          test "$(md5sum "${CONFIGURATION_PATH}" | cut -d' ' -f1)" = "c4f0bebdc0e5cded2cb4eb5c39b6a684"
+          test "${CONFIGURATION_SHA256}" = "06fc2d8fa829a1a17a9be62a9f62c68532956b93fd8c5587cf5e87360f08704c"
 
   test-configuration-url:
     name: Test for configuration-url
@@ -84,10 +85,11 @@ jobs:
       - name: Verify
         env:
           CONFIGURATION_PATH: ${{ steps.exercise.outputs.configuration-path }}
+          CONFIGURATION_SHA256: ${{ steps.exercise.outputs.configuration-sha256 }}
         run: |
           set -x
           [[ "${CONFIGURATION_PATH}" =~ "${RUNNER_TEMP}"/yamllint-.*.yml ]]
-          test "$(md5sum "${CONFIGURATION_PATH}" | cut -d' ' -f1)" = "a08c2c4ccd15b84d1ecc9732f7a0ec45"
+          test "${CONFIGURATION_SHA256}" = "fc22a47183b116ad92bbb2418d40cbb84d397a936701319632e1e47bfcb5b51a"
 
   test-omit:
     name: Test for omit
@@ -117,10 +119,11 @@ jobs:
       - name: Verify
         env:
           CONFIGURATION_PATH: ${{ steps.exercise.outputs.configuration-path }}
+          CONFIGURATION_SHA256: ${{ steps.exercise.outputs.configuration-sha256 }}
         run: |
           set -x
           test "${CONFIGURATION_PATH}" = ".github/labeler.yml"
-          test "$(md5sum "${CONFIGURATION_PATH}" | cut -d' ' -f1)" = "e46223a0b0a0f0f188df6a713c9fe5ed"
+          test "${CONFIGURATION_SHA256}" = "8d62af2e414812b4cacf959a3b70285b14fde7246f0212a2af40486c7b602b7e"
 
   test-error:
     name: Test for error

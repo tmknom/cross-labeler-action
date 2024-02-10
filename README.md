@@ -47,6 +47,7 @@ Refer to the detailed configuration syntax for the labeler in [actions/labeler][
 | Name | Description |
 | :--- | :---------- |
 | configuration-path | The path for the configuration file to passing actions/labeler. |
+| configuration-sha256 | SHA256 of the configuration file to passing actions/labeler. |
 
 <!-- actdocs end -->
 

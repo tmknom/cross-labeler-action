@@ -43,6 +43,9 @@ outputs:
   configuration-path:
     value: ${{ steps.config.outputs.path }}
     description: The path for the configuration file to passing actions/labeler.
+  configuration-sha256:
+    value: ${{ steps.config.outputs.sha256 }}
+    description: SHA256 of the configuration file to passing actions/labeler.
 
 runs:
   using: composite
@@ -96,6 +99,7 @@ runs:
           exit 1
         fi
         echo "path=${valid}" >> "${GITHUB_OUTPUT}"
+        echo "sha256=$(sha256sum "${valid}" | cut -d' ' -f1)" >> "${GITHUB_OUTPUT}"
         echo "::endgroup::"
       shell: bash
 
