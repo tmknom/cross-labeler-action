@@ -40,6 +40,7 @@ Refer to the detailed configuration syntax for the labeler in [actions/labeler][
 | :--- | :---------- | :------ | :------: |
 | configuration-path | The path for the label configurations. | n/a | no |
 | configuration-url | The url for the label configurations. | n/a | no |
+| pr-number | The pull request number(s). | n/a | no |
 
 ## Outputs
 
