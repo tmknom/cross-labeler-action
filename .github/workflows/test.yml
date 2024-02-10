@@ -1,0 +1,154 @@
+name: Test
+on:
+  workflow_dispatch:
+  pull_request:
+    paths: ["action.yml", ".github/workflows/test.yml"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  PR_NUMBER: 11 # Pull request for test
+  DEFAULT_CONFIG_PATH: .github/labeler.yml
+
+jobs:
+  test-configuration-path:
+    name: Test for configuration-path
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: tmknom/checkout-action@v1
+
+      - name: Setup
+        id: setup
+        run: |
+          set -x
+          rm -f "${DEFAULT_CONFIG_PATH}"
+
+          config="${RUNNER_TEMP}/labeler.yml"
+          cat <<EOF >"${config}"
+          test:
+            - head-branch: ["^test", "configuration-path"]
+          EOF
+          echo "path=${config}" >> "${GITHUB_OUTPUT}"
+
+      - name: Exercise
+        id: exercise
+        uses: ./
+        with:
+          configuration-path: ${{ steps.setup.outputs.path }}
+          pr-number: ${{ env.PR_NUMBER }}
+
+      - name: Verify
+        env:
+          CONFIGURATION_PATH: ${{ steps.exercise.outputs.configuration-path }}
+        run: |
+          set -x
+          test "${CONFIGURATION_PATH}" = "${RUNNER_TEMP}/labeler.yml"
+          test "$(md5sum "${CONFIGURATION_PATH}" | cut -d' ' -f1)" = "c4f0bebdc0e5cded2cb4eb5c39b6a684"
+
+  test-configuration-url:
+    name: Test for configuration-url
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: tmknom/checkout-action@v1
+
+      - name: Setup
+        run: |
+          set -x
+          rm -f "${DEFAULT_CONFIG_PATH}"
+
+      - name: Exercise
+        id: exercise
+        uses: ./
+        with:
+          configuration-url: https://raw.githubusercontent.com/tmknom/cross-labeler-action/e23cfda6a6423ce68d3787c476e41773e07778fd/.github/fixtures/test.yml
+          pr-number: ${{ env.PR_NUMBER }}
+
+      - name: Verify
+        env:
+          CONFIGURATION_PATH: ${{ steps.exercise.outputs.configuration-path }}
+        run: |
+          set -x
+          [[ "${CONFIGURATION_PATH}" =~ "${RUNNER_TEMP}"/yamllint-.*.yml ]]
+          test "$(md5sum "${CONFIGURATION_PATH}" | cut -d' ' -f1)" = "a08c2c4ccd15b84d1ecc9732f7a0ec45"
+
+  test-omit:
+    name: Test for omit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: tmknom/checkout-action@v1
+
+      - name: Setup
+        run: |
+          set -x
+          cat <<EOF >"${DEFAULT_CONFIG_PATH}"
+          test:
+            - head-branch: ["^test", "omit"]
+          EOF
+
+      - name: Exercise
+        id: exercise
+        uses: ./
+        with:
+          pr-number: ${{ env.PR_NUMBER }}
+
+      - name: Verify
+        env:
+          CONFIGURATION_PATH: ${{ steps.exercise.outputs.configuration-path }}
+        run: |
+          set -x
+          test "${CONFIGURATION_PATH}" = ".github/labeler.yml"
+          test "$(md5sum "${CONFIGURATION_PATH}" | cut -d' ' -f1)" = "e46223a0b0a0f0f188df6a713c9fe5ed"
+
+  test-error:
+    name: Test for error
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: tmknom/checkout-action@v1
+
+      - name: Setup
+        run: |
+          set -x
+          rm -f "${DEFAULT_CONFIG_PATH}"
+
+      - name: Exercise
+        id: exercise
+        uses: ./
+        with:
+          pr-number: ${{ env.PR_NUMBER }}
+        continue-on-error: true
+
+      - name: Verify
+        if: ${{ always() }}
+        env:
+          OUTCOME: ${{ steps.exercise.outcome }}
+        run: |
+          set -x
+          test "${OUTCOME}" = "failure"
