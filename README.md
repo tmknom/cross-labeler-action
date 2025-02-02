@@ -71,10 +71,6 @@ N/A
 
 See [GitHub Releases][releases].
 
-## License
-
-Apache 2 Licensed. See [LICENSE](LICENSE) for full details.
-
 [labeler]: https://github.com/actions/labeler
 [conventional]: https://www.conventionalcommits.org
 [releases]: https://github.com/tmknom/cross-labeler-action/releases
