@@ -57,6 +57,7 @@ Refer to the detailed configuration syntax for the labeler in [actions/labeler][
 | :------------ | :----- |
 | contents      | read   |
 | pull-requests | write  |
+| issues        | write  |
 
 ## FAQ
 
