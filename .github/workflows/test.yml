@@ -88,7 +88,7 @@ jobs:
           CONFIGURATION_SHA256: ${{ steps.exercise.outputs.configuration-sha256 }}
         run: |
           set -x
-          [[ "${CONFIGURATION_PATH}" =~ "${RUNNER_TEMP}"/yamllint-.*.yml ]]
+          [[ "${CONFIGURATION_PATH}" =~ "${RUNNER_TEMP}"/labeler-.*.yml ]]
           test "${CONFIGURATION_SHA256}" = "fc22a47183b116ad92bbb2418d40cbb84d397a936701319632e1e47bfcb5b51a"
 
   test-omit:
